@@ -3,51 +3,47 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Broskis Calculator</title>
+<title>Lil Zé Counter</title>
 <style>
 body{display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:#121212;font-family:sans-serif;color:#fff}
-.container{background:rgba(255,255,255,.05);padding:30px 40px;border-radius:20px;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.5);max-width:600px;width:90%}
-h1{margin-bottom:20px;font-size:28px;color:#4caf50}
-.contador{display:flex;justify-content:space-around;margin-top:20px}
-.unidade{background:rgba(255,255,255,.1);padding:20px 15px;border-radius:15px;min-width:70px;font-weight:700}
-.numero{font-size:32px;color:#4caf50;display:block}
-.label{font-size:14px;color:#ccc;margin-top:5px}
-button{margin-top:25px;padding:12px 25px;font-size:16px;border:none;border-radius:8px;background:#4caf50;color:#fff;cursor:pointer}
+.container{background:rgba(255,255,255,.05);padding:25px;border-radius:15px;text-align:center;max-width:600px;width:90%}
+h1{color:#4caf50;margin-bottom:15px;font-size:26px}
+.contador{display:flex;justify-content:space-around;flex-wrap:wrap;margin-top:15px}
+.unidade{background:rgba(255,255,255,.1);padding:15px 10px;border-radius:12px;min-width:60px;margin:5px;font-weight:700}
+.numero{color:#4caf50;font-size:28px;display:block}
+.label{font-size:12px;color:#ccc;margin-top:3px}
+button{margin-top:20px;padding:10px 20px;border:none;border-radius:8px;background:#4caf50;color:#fff;cursor:pointer}
 button:hover{background:#45a049}
+@media(max-width:500px){h1{font-size:20px}.numero{font-size:22px}.label{font-size:10px}button{padding:8px 16px;font-size:14px}}
 </style>
 </head>
 <body>
 <div class="container">
 <h1>Há quanto tempo Lil Zé deve pro Yoon?</h1>
-<p>Começou em: <strong>19/01/2024 09:25</strong></p>
-<div class="contador" id="tempoDecorrido">
-  <div class="unidade"><span class="numero" id="anos">--</span><span class="label">Anos</span></div>
-  <div class="unidade"><span class="numero" id="dias">--</span><span class="label">Dias</span></div>
-  <div class="unidade"><span class="numero" id="horas">--</span><span class="label">Horas</span></div>
-  <div class="unidade"><span class="numero" id="minutos">--</span><span class="label">Minutos</span></div>
-  <div class="unidade"><span class="numero" id="segundos">--</span><span class="label">Segundos</span></div>
+<div class="contador">
+<div class="unidade"><span class="numero" id="anos">--</span><span class="label">anos</span></div>
+<div class="unidade"><span class="numero" id="dias">--</span><span class="label">dias</span></div>
+<div class="unidade"><span class="numero" id="horas">--</span><span class="label">horas</span></div>
+<div class="unidade"><span class="numero" id="minutos">--</span><span class="label">minutos</span></div>
+<div class="unidade"><span class="numero" id="segundos">--</span><span class="label">segundos</span></div>
 </div>
 <button id="playBtn">▶️ Recado</button>
 <audio id="audio" loop><source src="beat.mp3" type="audio/mpeg"></audio>
 </div>
 <script>
 const inicio=new Date('2024-01-19T09:25:00'),
-      ids=['anos','dias','horas','minutos','segundos'].map(i=>document.getElementById(i));
+ids=['anos','dias','horas','minutos','segundos'].map(i=>document.getElementById(i));
 function pad(n){return n.toString().padStart(2,'0')}
-function atualizar(){
-  let d=Math.floor((new Date()-inicio)/1000),
-      totalDias=Math.floor(d/86400);
-  d-=totalDias*86400;
-  let anos=Math.floor(totalDias/365),
-      dias=totalDias%365,
-      horas=Math.floor(d/3600);
-  d-=horas*3600;
-  let minutos=Math.floor(d/60),segundos=d-minutos*60;
-  [anos,dias,horas,minutos,segundos].forEach((v,i)=>ids[i].textContent=i<2?v:pad(v));
+function atualizar(){ 
+let d=Math.floor((new Date()-inicio)/1000),
+td=Math.floor(d/86400); d-=td*86400;
+let anos=Math.floor(td/365), dias=td%365,
+horas=Math.floor(d/3600); d-=horas*3600,
+minutos=Math.floor(d/60), segundos=d-minutos*60;
+[anos,dias,horas,minutos,segundos].forEach((v,i)=>ids[i].textContent=i<2?v:pad(v))
 }
-setInterval(atualizar,1000);
-atualizar();
-document.getElementById('playBtn').addEventListener('click',()=>document.getElementById('audio').play());
+setInterval(atualizar,1000); atualizar();
+document.getElementById('playBtn').onclick=()=>document.getElementById('audio').play();
 </script>
 </body>
 </html>
