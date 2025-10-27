@@ -26,30 +26,30 @@
     </audio>
   </div>
   <script>
-    const start = new Date('2024-01-19T09:25:00');
+    const inicio = new Date('2024-01-19T09:25:00');
     const elapsedEl = document.getElementById('elapsed');
 
     function pad(n){return n.toString().padStart(2,'0');}
 
     function updateElapsed(){
-      const now = new Date();
-      let diff = Math.floor((now - start)/1000);
+      const agora = new Date();
+      let diferenca = Math.floor((agora - inicio)/1000);
 
-      let totalDays = Math.floor(diff/(24*3600));
-      diff -= totalDays*24*3600;
+      let totaldias = Math.floor(diff/(24*3600));
+      diferenca -= totaldias*24*3600;
 
-      const years = Math.floor(totalDays / 365);
-      const days = totalDays % 365;
+      const anos = Math.floor(totaldias / 365);
+      const dias = totaldias % 365;
 
-      const hours = Math.floor(diff/3600);
-      diff -= hours*3600;
-      const minutes = Math.floor(diff/60);
-      const seconds = diff - minutes*60;
+      const horas = Math.floor(diff/3600);
+      diferenca -= hours*3600;
+      const minutos = Math.floor(diferenca/60);
+      const segundos = diferenca - minutos*60;
 
-      if(years > 0){
-        elapsedEl.textContent = `${years} ano${years>1?'s':''} e ${days} dias ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+      if(anos > 0){
+        elapsedEl.textContent = `${anos} ano${anos>1?'s':''} e ${dias} dias ${pad(horas)}:${pad(minutos)}:${pad(segundos)}`;
       } else {
-        elapsedEl.textContent = `${days} dias ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+        elapsedEl.textContent = `${dias} dias ${pad(horas)}:${pad(minutos)}:${pad(segundos)}`;
       }
     }
 
