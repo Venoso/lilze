@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quem Deve? — Lil Zé → Yoon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0f14; --neon1:#ff3b81; --neon2:#7affd2; --glass: rgba(255,255,255,0.06);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Montserrat,system-ui,Segoe UI,Roboto,Arial}
+    body{
+      background: radial-gradient(ellipse at 10% 10%, rgba(122,255,210,0.06), transparent 10%),
+                  linear-gradient(120deg,#071021 0%, #08111a 40%, #0b0f14 100%);
+      color:#e6eef6;display:flex;align-items:center;justify-content:center;padding:3rem;
+    }
+    .card{width:100%;max-width:980px;border-radius:18px;padding:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow: 0 10px 40px rgba(2,6,23,0.7);backdrop-filter: blur(6px);}
+
+    header{display:flex;align-items:center;gap:18px}
+    .logo{width:88px;height:88px;border-radius:14px;background:linear-gradient(45deg,var(--neon1),var(--neon2));display:flex;align-items:center;justify-content:center;box-shadow:0 6px 30px rgba(122,255,210,0.06) inset}
+    .logo h1{font-family:Orbitron,monospace;margin:0;font-size:20px;letter-spacing:1px}
+
+    .meta{flex:1}
+    .meta h2{margin:0;font-size:26px;font-weight:900;font-family:Orbitron}
+    .meta p{margin:6px 0 0 0;opacity:0.8}
+
+    .timebox{margin-top:20px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(122,255,210,0.01));padding:20px;border-radius:12px;display:flex;align-items:center;gap:18px}
+    .started{flex:1}
+    .started strong{display:block;font-family:Orbitron}
+    .elapsed{font-size:30px;font-weight:700;font-family:Orbitron}
+
+    .names{display:flex;gap:12px;margin-top:16px}
+    .pill{padding:8px 12px;border-radius:999px;background:var(--glass);border:1px solid rgba(255,255,255,0.03);font-weight:600}
+
+    .controls{display:flex;gap:12px;align-items:center}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.08);padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+    .play{background:linear-gradient(90deg,var(--neon1),var(--neon2));color:#021;box-shadow:0 8px 30px rgba(255,59,129,0.08);border:none}
+
+    .visual{height:70px;margin-top:22px;display:flex;align-items:center;gap:6px}
+    .bar{flex:1;height:100%;border-radius:6px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));opacity:0.45;transform-origin:bottom;}
+
+    footer{margin-top:16px;font-size:13px;opacity:0.7}
+
+    @media (max-width:600px){.elapsed{font-size:22px}.logo{width:64px;height:64px}}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <header>
+      <div class="logo"><h1>TRAP</h1></div>
+      <div class="meta">
+        <h2>Lil Zé deve — Yoon esperando</h2>
+        <p>Feat pago em <strong>19/01/2024 às 09:25</strong>. Aqui mostra quanto tempo se passou desde então.</p>
+      </div>
+      <div class="controls">
+        <button id="playBtn" class="btn play">▶️ Tocar Beat</button>
+        <button id="muteBtn" class="btn">🔇 Mudo</button>
+      </div>
+    </header>
+
+    <div class="timebox">
+      <div class="started">
+        <div class="pill">Início: <strong id="startTime">19/01/2024 09:25</strong></div>
+        <div class="names" style="margin-top:10px">
+          <div class="pill">Quem deve: <strong>Lil Zé</strong></div>
+          <div class="pill">Quem espera: <strong>Yoon</strong></div>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div class="elapsed" id="elapsed">-- dias --:--:--</div>
+        <div style="opacity:0.7;margin-top:6px;font-size:13px">Atualizado ao vivo</div>
+      </div>
+    </div>
+
+    <div class="visual" id="visual">
+      <div class="bar" style="height:20%"></div>
+      <div class="bar" style="height:40%"></div>
+      <div class="bar" style="height:60%"></div>
+      <div class="bar" style="height:35%"></div>
+      <div class="bar" style="height:80%"></div>
+      <div class="bar" style="height:50%"></div>
+      <div class="bar" style="height:70%"></div>
+    </div>
+
+    <footer>
+      Dica: se o beat não tocar automaticamente, clique em "Tocar Beat" — navegadores exigem interação do usuário para som.
+    </footer>
+
+    <!-- audio: coloque um arquivo beat.mp3 na mesma pasta do index.html no seu repo GitHub -->
+    <audio id="audio" loop preload="auto">
+      <source src="beat.mp3" type="audio/mpeg">
+      Seu navegador não suporta áudio embutido.
+    </audio>
+  </div>
+
+  <script>
+    // tempo de início fornecido pelo usuário
+    const start = new Date('2024-01-19T09:25:00'); // ISO local time assumed (BR)
+
+    const elapsedEl = document.getElementById('elapsed');
+    const startTimeEl = document.getElementById('startTime');
+    startTimeEl.textContent = '19/01/2024 09:25';
+
+    function pad(n){return n.toString().padStart(2,'0');}
+
+    function updateElapsed(){
+      const now = new Date();
+      let diff = Math.floor((now - start) / 1000); // segundos
+      const days = Math.floor(diff / (24*3600));
+      diff -= days * 24*3600;
+      const hours = Math.floor(diff / 3600); diff -= hours*3600;
+      const minutes = Math.floor(diff / 60); const seconds = diff - minutes*60;
+      elapsedEl.textContent = `${days} dias ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+
+      // anima as barras pelo som do tempo (só efeito visual)
+      const bars = document.querySelectorAll('.bar');
+      bars.forEach((b,i)=>{
+        const h = 20 + ((now.getSeconds() + i*7) % 60) * 1.1; // variação
+        b.style.height = h + '%';
+        b.style.opacity = 0.4 + (h/200);
+      });
+    }
+
+    updateElapsed();
+    setInterval(updateElapsed,1000);
+
+    // controle de áudio (os navegadores normalmente requerem interação do usuário)
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playBtn');
+    const muteBtn = document.getElementById('muteBtn');
+    let muted = false;
+
+    playBtn.addEventListener('click', async ()=>{
+      try{
+        await audio.play();
+        playBtn.textContent = '⏸️ Pausar';
+        playBtn.classList.remove('play');
+      }catch(e){
+        // falha em autoplay (normal)
+        console.warn('play failed', e);
+      }
+    });
+
+    playBtn.addEventListener('dblclick', ()=>{ // duplo clique pausa
+      audio.pause();
+      playBtn.textContent = '▶️ Tocar Beat';
+      playBtn.classList.add('play');
+    });
+
+    muteBtn.addEventListener('click', ()=>{
+      muted = !muted;
+      audio.muted = muted;
+      muteBtn.textContent = muted? '🔊 Sem mudo' : '🔇 Mudo';
+    });
+
+    // tentar tocar ao primeiro clique em qualquer lugar (melhora UX em mobile)
+    function tryPlayOnFirstInteraction(){
+      const handler = async ()=>{
+        try{ await audio.play(); }catch(e){}
+        document.removeEventListener('click', handler);
+      };
+      document.addEventListener('click', handler);
+    }
+    tryPlayOnFirstInteraction();
+  </script>
+</body>
+</html>
