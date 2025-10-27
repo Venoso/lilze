@@ -19,7 +19,7 @@
     <h1>Há quanto tempo Lil Zé deve pro Yoon?</h1>
     <p>Começou em: <strong>19/01/2024 09:25</strong></p>
     <br>
-    <div id="elapsed">-- dias --:--:--</div>
+    <div id="tempoDecorrido">-- dias --:--:--</div>
     <button id="playBtn">▶️ Recado</button>
     <audio id="audio" loop>
       <source src="beat.mp3" type="audio/mpeg">
@@ -27,11 +27,11 @@
   </div>
   <script>
     const inicio = new Date('2024-01-19T09:25:00');
-    const elapsedEl = document.getElementById('elapsed');
+    const tempoDecorridoEl = document.getElementById('elapsed');
 
     function pad(n){return n.toString().padStart(2,'0');}
 
-    function updateElapsed(){
+    function updateTempoDecorrido(){
       const agora = new Date();
       let diferenca = Math.floor((agora - inicio)/1000);
 
@@ -47,14 +47,14 @@
       const segundos = diferenca - minutos*60;
 
       if(anos > 0){
-        elapsedEl.textContent = `${anos} ano${anos>1?'s':''} e ${dias} dias ${pad(horas)}:${pad(minutos)}:${pad(segundos)}`;
+        tempoDecorridoEl.textContent = `${anos} ano${anos>1?'s':''} e ${dias} dias ${pad(horas)}:${pad(minutos)}:${pad(segundos)}`;
       } else {
-        elapsedEl.textContent = `${dias} dias ${pad(horas)}:${pad(minutos)}:${pad(segundos)}`;
+        tempoDecorridoEl.textContent = `${dias} dias ${pad(horas)}:${pad(minutos)}:${pad(segundos)}`;
       }
     }
 
-    setInterval(updateElapsed,1000);
-    updateElapsed();
+    setInterval(updateTempoDecorrido,1000);
+    updateTempoDecorrido();
 
     const audio = document.getElementById('audio');
     document.getElementById('playBtn').addEventListener('click',()=>audio.play());
