@@ -57,7 +57,10 @@
     updateElapsed();
 
     const audio = document.getElementById('audio');
-    document.getElementById('playBtn').addEventListener('click',()=>audio.play());
+    document.getElementById('playBtn').addEventListener('click', () => {
+    audio.play().catch(err => console.log('Erro ao tocar áudio:', err));
+});
+    
   </script>
 </body>
 </html>
